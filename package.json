@@ -1,0 +1,28 @@
+{
+  "name": "karma-eslint",
+  "version": "1.0.0",
+  "description": "A Karma plugin for checking  Syntax of JavaScript using ESLint.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamJoeTaylor/karma-eslint.git"
+  },
+  "keywords": [
+    "karma-plugin",
+    "karma-preprocessor",
+    "eslint",
+    "karma"
+  ],
+  "author": "Joe Taylor <iamjoetaylor@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iamJoeTaylor/karma-eslint/issues"
+  },
+  "homepage": "https://github.com/iamJoeTaylor/karma-eslint",
+  "dependencies": {
+    "eslint": ">=0.24.0"
+  }
+}

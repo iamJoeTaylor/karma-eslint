@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/iamJoeTaylor/karma-eslint",
   "dependencies": {
+    "chalk": "^1.1.0",
     "eslint": ">=0.24.0"
   }
 }

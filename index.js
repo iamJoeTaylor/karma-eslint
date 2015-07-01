@@ -1,27 +1,19 @@
 (function (){
   'use strict';
 
+  var chalk = require('chalk');
   var CLIEngine = require("eslint").CLIEngine;
   var cli = new CLIEngine({});
-  var _ = '\x1b[';
-  var COLOR = {
-      RED: _ + '91m',
-      LIGHT_RED: _ + '31m',
-      DARK_BLUE: _ + '34m',
-      BLUE: _ + '94m',
-      LIGHT_GREEN: _ + '92m',
-      GREEN: _ + '32m',
-      WHITE: _ + '37m',
-      DARK_GREY: _ + '31m;1m',
-      RESET: _ + '0m'
-  };
 
-  var ESLintReporter = function(loggerFactory, eslintPreprocessorConfig) {
+  var ESLintReporter = function(loggerFactory, config) {
+    var eslintPreprocessorConfig = config.eslint;
     var log = loggerFactory.create('preprocessor.eslint');
     var options = {
       stopOnError: getOptionWithFallback('stopOnError', true),
       stopOnWarning: getOptionWithFallback('stopOnWarning', false)
     };
+
+    chalk.enabled = config.colors !== false;
 
     function getOptionWithFallback(option, fallback) {
       if(typeof eslintPreprocessorConfig[option] !== 'undefined') {
@@ -33,15 +25,18 @@
 
     function processErrors(results) {
       var getError = function(message) {
-        return '   - ' + COLOR.LIGHT_RED + message.line +
-          ':' + message.column + COLOR.RESET + ' ' +
-          COLOR.DARK_BLUE + message.message + COLOR.RESET;
+        var rule = (message.ruleId) ?
+          ' Rule: ' + message.ruleId :
+          '';
+
+        return chalk.yellow('   - ' + message.line + ':' + message.column + ' ' + message.message) +
+               chalk.green(rule);
       };
 
       results.forEach(function(result) {
         if(result.errorCount === 1) {
           log.error('\n' +
-            COLOR.LIGHT_RED + result.filePath + '\n' + COLOR.RESET +
+            chalk.red(result.filePath) + '\n' +
             getError(result.messages[0]) + '\n\n'
           );
         } else if(result.errorCount > 0) {
@@ -50,7 +45,7 @@
             errors.push(getError(message));
           });
           log.error('\n' +
-            COLOR.LIGHT_RED + result.errorCount + ' errors in ' + result.filePath + '\n' + COLOR.RESET +
+            chalk.red(result.errorCount + ' errors in ' + result.filePath) + '\n' +
             errors.join('\n') + '\n\n'
           );
         }
@@ -75,7 +70,7 @@
     };
   };
 
-  ESLintReporter.$inject = ['logger', 'config.eslint'];
+  ESLintReporter.$inject = ['logger', 'config'];
 
   module.exports = {
     'preprocessor:eslint': ['factory', ESLintReporter]

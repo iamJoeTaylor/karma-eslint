@@ -3,9 +3,9 @@
 
   var chalk = require('chalk');
   var CLIEngine = require("eslint").CLIEngine;
-  var cli = new CLIEngine({});
 
   var ESLintReporter = function(loggerFactory, config) {
+    var cli = new CLIEngine(config.linter);
     var eslintPreprocessorConfig = config.eslint;
     var log = loggerFactory.create('preprocessor.eslint');
     var options = {

@@ -30,12 +30,18 @@ Karma-eslint accepts these options:
 > `stopOnWarning`
 > - fails a test on any Warning *default: `false`*
 
+> `engine`
+> - eslint CLIEngine [configuration options](http://eslint.org/docs/developer-guide/nodejs-api.html#cliengine).  
+
 Example:
 
 ```javascript
   eslint: {
     stopOnError: false,
-    stopOnWarning: true
+    stopOnWarning: true,
+    engine: {
+      configFile: 'client/.eslintrc'
+    }
   }
 ```
 

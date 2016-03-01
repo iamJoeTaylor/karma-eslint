@@ -36,12 +36,12 @@
       };
 
       results.forEach(function(result) {
-	  if(result.errorCount > 0) {
+        if(result.errorCount > 0) {
           var errors = [];
           result.messages.forEach(function(message) {
-	      if(message.severity > 1){
-		  errors.push(getError(message));
-	      }
+            if(message.severity > 1) {
+              errors.push(getError(message));
+            }
           });
           log.error('\n' +
             chalk.red(result.errorCount + ' error(s) in ' + result.filePath) + '\n' +
@@ -62,12 +62,12 @@
       };
 
       results.forEach(function(result) {
-	  if(result.warningCount > 0) {
+        if(result.warningCount > 0) {
           var warnings = [];
           result.messages.forEach(function(message) {
-	      if(message.severity === 1){
-		  warnings.push(getWarning(message));
-	      }
+          if(message.severity === 1) {
+            warnings.push(getWarning(message));
+          }
           });
           log.warn('\n' +
             chalk.yellow(result.warningCount + ' warning(s) in ' + result.filePath) + '\n' +
@@ -78,9 +78,10 @@
     }
 
     function shouldStop(report) {
-      if(report.warningCount && 
-	 (options.showWarnings || options.stopOnWarning)) 
-	  processWarnings(report.results);
+      if(report.warningCount &&
+        (options.showWarnings || options.stopOnWarning)) {
+          processWarnings(report.results);
+      }
       if(report.errorCount) processErrors(report.results);
       return (report.errorCount && options.stopOnError) ||
         (report.warningCount && options.stopOnWarning);

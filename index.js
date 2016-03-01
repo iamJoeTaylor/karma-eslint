@@ -35,18 +35,13 @@
       };
 
       results.forEach(function(result) {
-        if(result.errorCount === 1) {
-          log.error('\n' +
-            chalk.red(result.filePath) + '\n' +
-            getError(result.messages[0]) + '\n\n'
-          );
-        } else if(result.errorCount > 0) {
+	  if(result.errorCount > 0) {
           var errors = [];
           result.messages.forEach(function(message) {
             errors.push(getError(message));
           });
           log.error('\n' +
-            chalk.red(result.errorCount + ' errors in ' + result.filePath) + '\n' +
+            chalk.red(result.errorCount + ' error(s) in ' + result.filePath) + '\n' +
             errors.join('\n') + '\n\n'
           );
         }

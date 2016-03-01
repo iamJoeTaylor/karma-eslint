@@ -29,13 +29,21 @@ Karma-eslint accepts these options:
 
 > `stopOnWarning`
 > - fails a test on any Warning *default: `false`*
+> - if set `true`, Warnings are always displayed
+
+
+> `showWarnings`
+> - to display Warning messages *default: `true`*
+> - has no effect if `stopOnWarning` is set `true`
+> - in such case Warnings are displayed anyway
 
 Example:
 
 ```javascript
   eslint: {
-    stopOnError: false,
-    stopOnWarning: true
+	stopOnError: true,
+	stopOnWarning: false,
+	showWarnings: true
   }
 ```
 

@@ -38,7 +38,9 @@
 	  if(result.errorCount > 0) {
           var errors = [];
           result.messages.forEach(function(message) {
-            errors.push(getError(message));
+	      if(message.severity > 1){
+		  errors.push(getError(message));
+	      }
           });
           log.error('\n' +
             chalk.red(result.errorCount + ' error(s) in ' + result.filePath) + '\n' +

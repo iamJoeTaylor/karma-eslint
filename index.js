@@ -8,6 +8,7 @@
     var eslintPreprocessorConfig = config.eslint || {};
     var log = loggerFactory.create('preprocessor.eslint');
     var options = {
+      showWarnings: getOptionWithFallback('showWarnings', true),
       stopOnError: getOptionWithFallback('stopOnError', true),
       stopOnWarning: getOptionWithFallback('stopOnWarning', false),
       engine: getOptionWithFallback('engine', {})
@@ -50,8 +51,37 @@
       });
     }
 
+    function processWarnings(results) {
+      var getWarning = function(message) {
+        var rule = (message.ruleId) ?
+          ' Rule: ' + message.ruleId :
+          '';
+
+        return chalk.yellow('   - ' + message.line + ':' + message.column + ' ' + message.message) +
+               chalk.green(rule);
+      };
+
+      results.forEach(function(result) {
+	  if(result.warningCount > 0) {
+          var warnings = [];
+          result.messages.forEach(function(message) {
+	      if(message.severity === 1){
+		  warnings.push(getWarning(message));
+	      }
+          });
+          log.warn('\n' +
+            chalk.yellow(result.warningCount + ' warning(s) in ' + result.filePath) + '\n' +
+            warnings.join('\n') + '\n\n'
+          );
+        }
+      });
+    }
+
     function shouldStop(report) {
-      if(report.errorCount || report.warningCount) processErrors(report.results);
+      if(report.warningCount && 
+	 (options.showWarnings || options.stopOnWarning)) 
+	  processWarnings(report.results);
+      if(report.errorCount) processErrors(report.results);
       return (report.errorCount && options.stopOnError) ||
         (report.warningCount && options.stopOnWarning);
     }

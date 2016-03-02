@@ -5,13 +5,14 @@
   var CLIEngine = require("eslint").CLIEngine;
 
   var ESLintReporter = function(loggerFactory, config) {
-    var cli = new CLIEngine(config.eslint.engine);
-    var eslintPreprocessorConfig = config.eslint;
+    var eslintPreprocessorConfig = config.eslint || {};
     var log = loggerFactory.create('preprocessor.eslint');
     var options = {
       stopOnError: getOptionWithFallback('stopOnError', true),
-      stopOnWarning: getOptionWithFallback('stopOnWarning', false)
+      stopOnWarning: getOptionWithFallback('stopOnWarning', false),
+      engine: getOptionWithFallback('engine', {})
     };
+    var cli = new CLIEngine(options.engine);
 
     chalk.enabled = config.colors !== false;
 

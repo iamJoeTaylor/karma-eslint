@@ -31,7 +31,7 @@ Karma-eslint accepts these options:
 > - fails a test on any Warning *default: `false`*
 
 > `engine`
-> - eslint CLIEngine [configuration options](http://eslint.org/docs/developer-guide/nodejs-api.html#cliengine).  
+> - eslint CLIEngine [configuration options](http://eslint.org/docs/developer-guide/nodejs-api.html#cliengine). *default: `{}`*
 
 Example:
 

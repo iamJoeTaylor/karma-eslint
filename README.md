@@ -29,6 +29,13 @@ Karma-eslint accepts these options:
 
 > `stopOnWarning`
 > - fails a test on any Warning *default: `false`*
+> - if set `true`, Warnings are always displayed
+
+
+> `showWarnings`
+> - to display Warning messages *default: `true`*
+> - has no effect if `stopOnWarning` is set `true`
+> - in such case Warnings are displayed anyway
 
 > `engine`
 > - eslint CLIEngine [configuration options](http://eslint.org/docs/developer-guide/nodejs-api.html#cliengine). *default: `{}`*
@@ -39,6 +46,7 @@ Example:
   eslint: {
     stopOnError: false,
     stopOnWarning: true,
+    showWarnings: true,
     engine: {
       configFile: 'client/.eslintrc'
     }

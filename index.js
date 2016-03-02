@@ -3,15 +3,16 @@
 
   var chalk = require('chalk');
   var CLIEngine = require("eslint").CLIEngine;
-  var cli = new CLIEngine({});
 
   var ESLintReporter = function(loggerFactory, config) {
-    var eslintPreprocessorConfig = config.eslint;
+    var eslintPreprocessorConfig = config.eslint || {};
     var log = loggerFactory.create('preprocessor.eslint');
     var options = {
       stopOnError: getOptionWithFallback('stopOnError', true),
-      stopOnWarning: getOptionWithFallback('stopOnWarning', false)
+      stopOnWarning: getOptionWithFallback('stopOnWarning', false),
+      engine: getOptionWithFallback('engine', {})
     };
+    var cli = new CLIEngine(options.engine);
 
     chalk.enabled = config.colors !== false;
 

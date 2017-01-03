@@ -8,13 +8,15 @@
     var eslintPreprocessorConfig = config.eslint || {};
     var log = loggerFactory.create('preprocessor.eslint');
     var options = {
-      showWarnings: getOptionWithFallback('showWarnings', true),
+      engine: getOptionWithFallback('engine', {}),
+      errorThreshold: getOptionWithFallback('errorThreshold', null),
       stopOnError: getOptionWithFallback('stopOnError', true),
       stopOnWarning: getOptionWithFallback('stopOnWarning', false),
-      engine: getOptionWithFallback('engine', {})
+      showWarnings: getOptionWithFallback('showWarnings', true),
+      stopAboveErrorThreshold: getOptionWithFallback('stopAboveErrorThreshold', false)
     };
     var cli = new CLIEngine(options.engine);
-
+    var totalErrorCount = 0;
     chalk.enabled = config.colors !== false;
 
     function getOptionWithFallback(option, fallback) {
@@ -82,7 +84,11 @@
         (options.showWarnings || options.stopOnWarning)) {
           processWarnings(report.results);
       }
-      if(report.errorCount) processErrors(report.results);
+
+      if(report.errorCount) {
+        totalErrorCount += report.errorCount;
+        processErrors(report.results);
+      };
       return (report.errorCount && options.stopOnError) ||
         (report.warningCount && options.stopOnWarning);
     }
@@ -93,6 +99,9 @@
       log.debug('Processing "%s".', file.originalPath);
       if(shouldStop(report)) {
         done(report.results);
+      } else if(options.stopAboveErrorThreshold && totalErrorCount > options.errorThreshold) {
+        log.error('\n' + chalk.red('There are more than ' + options.errorThreshold + ' errors'));
+        process.exit();
       } else {
         done(null, content);
       }

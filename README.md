@@ -26,11 +26,16 @@ Karma-eslint accepts these options:
 > `stopOnError`
 > - fails a test on any error *default: `true`*
 
+> `errorThreshold`
+> - a threshold value for total errors *default: `null`*
+> - use with `stopAboveErrorThreshold` to stop build if errors exceed threshold
+
+> `stopAboveErrorThreshold`
+> - stops build if `errorThreshold` exceeded *default: `false`*
 
 > `stopOnWarning`
 > - fails a test on any Warning *default: `false`*
 > - if set `true`, Warnings are always displayed
-
 
 > `showWarnings`
 > - to display Warning messages *default: `true`*
@@ -44,6 +49,8 @@ Example:
 
 ```javascript
   eslint: {
+    errorThreshold: 1000,
+    stopAboveErrorThreshold: true,
     stopOnError: false,
     stopOnWarning: true,
     showWarnings: true,

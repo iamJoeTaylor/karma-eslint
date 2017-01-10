@@ -1,6 +1,5 @@
 karma-eslint
 ------------
-
 Installation
 ============
 

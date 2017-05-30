@@ -93,15 +93,24 @@
         (report.warningCount && options.stopOnWarning);
     }
 
+    function reportErrorTally() {
+      if(totalErrorCount > 0) {
+        log.warn(chalk.green('There are a total of ') +
+        chalk.white.bgRed(totalErrorCount) + chalk.green(' errors'));
+      }
+    }
+
     return function(content, file, done) {
       var report = cli.executeOnFiles([file.path]);
 
       log.debug('Processing "%s".', file.originalPath);
+      reportErrorTally();
+
       if(shouldStop(report)) {
         done(report.results);
       } else if(options.stopAboveErrorThreshold && totalErrorCount > options.errorThreshold) {
         log.error('\n' + chalk.red('There are more than ' + options.errorThreshold + ' errors'));
-        process.exit();
+        process.exit(1);
       } else {
         done(null, content);
       }
